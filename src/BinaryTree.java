@@ -11,6 +11,19 @@ public class BinaryTree {
 		}
 	}
 
+	public static void invertTree(Node node) {
+		if (node == null) {
+			return;
+		}
+
+		Node temp = node.left;
+		node.left = node.right;
+		node.right = temp;
+
+		invertTree(node.left);
+		invertTree(node.right);
+	}
+
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
 
@@ -20,6 +33,10 @@ public class BinaryTree {
 		tree.root.left.left = new Node(4);
 
 		System.out.println("\nBinary Tree: ");
+		tree.traverseTree(tree.root);
+
+		invertTree(tree.root);
+		System.out.println("\nInverted Tree: ");
 		tree.traverseTree(tree.root);
 	}
 }
