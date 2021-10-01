@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2020-10-12 16:13:04">
+<sys_script_fix action="INSERT_OR_UPDATE">
+<active>true</active>
+<before>false</before>
+<description/>
+<flush_cache>false</flush_cache>
+<name>cmpv1 revert script script</name>
+<record_for_rollback>false</record_for_rollback>
+<run_once>true</run_once>
+<script><![CDATA[// Class vars
+var oldCiClasses = 'cmdb_ci_ec2_instance,cmdb_ci_aws_elb,cmdb_ci_aws_asgrp,cmdb_ci_aws_ebs_volume,cmdb_ci_aws_resource';
+var newCiClasses = 'cmdb_ci_vm_instance,cmdb_ci_lb_service,cmdb_ci_storage_volume,cmdb_ci_cmp_resource';
+
+// Revert new CIs to Retired
+gs.info("SNCDEBUG set new Cis to Installed starting...");
+var grUpdateStatusForNew = new GlideRecord('cmdb_ci');
+grUpdateStatusForNew.addQuery('sys_class_name','IN',newCiClasses);
+grUpdateStatusForNew.addQuery('install_status','=','1');
+grUpdateStatusForNew.setValue('install_status', '3');
+grUpdateStatusForNew.updateMultiple();
+gs.info("SNCDEBUG set new Cis to Retired completed...");
+
+// Revert old CIs to Installed
+gs.info("SNCDEBUG set old Cis to Retired starting...");
+var grUpdateStatusForOld = new GlideRecord('cmdb_ci');
+grUpdateStatusForOld.addQuery('sys_class_name','IN',oldCiClasses);
+grUpdateStatusForOld.addQuery('install_status','=','7');
+grUpdateStatusForOld.setValue('install_status', '1');
+grUpdateStatusForOld.updateMultiple();
+gs.info("SNCDEBUG set old Cis to Installed completed...");]]></script>
+<sys_class_name>sys_script_fix</sys_class_name>
+<sys_created_by>warrejo</sys_created_by>
+<sys_created_on>2020-09-23 17:13:46</sys_created_on>
+<sys_customer_update>false</sys_customer_update>
+<sys_id>bf35457fdb975050f70543d913961900</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_name>cmpv1 revert script script</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sys_script_fix_bf35457fdb975050f70543d913961900</sys_update_name>
+<sys_updated_by>warrejo</sys_updated_by>
+<sys_updated_on>2020-09-23 17:15:38</sys_updated_on>
+<unloadable>false</unloadable>
+</sys_script_fix>
+</unload>
