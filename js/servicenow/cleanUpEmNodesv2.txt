@@ -1,0 +1,85 @@
+var dryRun = true;
+var deletedRecords = 0;
+var changedToOther = 0;
+var changedToServer = 0;
+var changedToPass = 0;
+
+var gr = new GlideRecord("em_unique_nodes");
+gr.addQuery("type", "Unknown");
+gr.orderBy("node");
+gr.query();
+
+var node;
+while(gr.next()){
+    node = gr.getValue("node");
+    gs.info("Process " + node + " node.");
+
+    //check if has duplicated record in em_unique_nodes table.
+    var gr2 = new GlideRecord("em_unique_nodes");
+    gr2.addQuery("cmdb_ci", node.toLowerCase());
+    gr2.query();
+    if(gr2.hasNext()){
+        gs.info("Going to remove unknown record with node: " + node);
+        if(!dryRun){
+            gr.deleteRecord();
+        }
+        this.deletedRecords++;
+        continue;
+    }
+
+    //check is node belongs to servers
+    var cmdbIdentifier = lookForNodeInCmdb("cmdb_ci_server" ,node, "sys_id");
+    if(!GlideStringUtil.nil(cmdbIdentifier)){
+        this.changedToServer++;
+        gs.info("The node " + node + " belongs to Servers!!!");
+        updateUniqueNodesRecord(gr, cmdbIdentifier, "server", true);
+        //Add sys id to cmdb_ci column.
+        continue;
+    }
+
+    cmdbIdentifier = lookForNodeInCmdb("cmdb_ci_web_application" ,node, "cmdb_ci");
+    if(!GlideStringUtil.nil(cmdbIdentifier)){
+        this.changedToPass++;
+        gs.info("The node " + node + " belongs to PaaS!!!");
+        updateUniqueNodesRecord(gr, cmdbIdentifier, "paas", false);
+        continue;
+    }
+
+    cmdbIdentifier = lookForNodeInCmdb("cmdb_ci" ,node, "sys_id");
+    if(!GlideStringUtil.nil(cmdbIdentifier)){
+        this.changedToOther++;
+        gs.info("The node " + node + " belongs to Others!!!");
+        updateUniqueNodesRecord(gr, cmdbIdentifier, "other", false);
+        continue;
+    }
+}
+
+gs.info("Total records been deleted: " + this.deletedRecords);
+gs.info("Total records changed to server: " + this.changedToServer);
+gs.info("Total records changed to PaaS: " + this.changedToPass);
+gs.info("Total records changed to Others: " + this.changedToOther);
+
+
+function lookForNodeInCmdb(table, node, field) {
+    var glideRecord = new GlideRecord(table);
+    var qc = glideRecord.addQuery("name", node);
+    qc.addOrCondition("ip_address", node);
+    qc.addOrCondition("fqdn", node);
+    glideRecord.query();
+    if(glideRecord.hasNext()){
+        glideRecord.next();
+        return glideRecord.getValue(field);
+    }
+    return "";
+}
+
+function updateUniqueNodesRecord(gr, ciSysId, type, isLicensable) {
+    gs.info("Going to update record set cmdb sys_id: " + ciSysId + " type: " + type + " isLicensable: " + isLicensable);
+    if(!dryRun){
+        gr.setValue("cmdb_ci", ciSysId);
+        gr.setValue("type", type);
+        gr.setValue("is_licensable", isLicensable);
+        gr.update();
+    }
+}
+
