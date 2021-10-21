@@ -1,54 +1,52 @@
 package main.battleship;
 
+import java.awt.Point;
 import java.util.Random;
-import java.util.HashMap;
 
 public class Ship {
-    private HashMap<Integer, Boolean> hitMap;
-    private Random randomInt;
-    private int startPos;
-    private int sizeOfShip;
+    private Point[] shipCoords;
 
-    public Ship(int bound, int shipSize) {
-         hitMap = new HashMap<Integer, Boolean>();
-         randomInt = new Random();
-         startPos = randomInt.nextInt(bound-2);
-         sizeOfShip = shipSize;
-
-         populateHitMap();
+    public Ship(int boundX, int boundY, int shipSize) {
+        this.shipCoords = new Point[shipSize];
+        setCoordsInGrid(boundX, boundY);
     }
 
-    public Ship() {
-         hitMap = new HashMap<Integer, Boolean>();
-         randomInt = new Random();
-         startPos = randomInt.nextInt(4);
-         sizeOfShip = 3;
-
-         populateHitMap();
-    }
-
-    public boolean checkForHit(int target) {
-        if(hitMap.containsKey(target)) {
+    public boolean checkForHit(Point target) {
+        if(this.shipCoords) {
             if(!hitMap.get(target)) {
                 hitMap.put(target,true);
                 System.out.println("You landed a hit!");
                 return true;
             }
-
             if(hitMap.get(target)) {
                 System.out.println("You already hit this target!");
                 return false;
             }
         }
-
         System.out.println("You missed!");
         return false;
     }
 
-    private void populateHitMap() {
-        for(int i=0; i<sizeOfShip; i++) {
-            hitMap.put(startPos+i,false);
+    private void setCoordsInGrid(int boundX, int boundY) {
+        int lastIdx = this.shipCoords.length-1;
+        while (this.shipCoords[lastIdx] == null) {
+            this.shipCoords[0] = createRandomStartingCoords(boundX, boundY);
+            GameHelper.fillCoords(this);
         }
     }
 
+    private static Point createRandomStartingCoords(int boundX, int boundY) {
+        Random randomInt = new Random();
+        int startPosX = randomInt.nextInt(boundX);
+        int startPosY = randomInt.nextInt(boundY);
+        return new Point(startPosX,startPosY);
+    }
+
+    public Point[] getCoords() {
+        return this.shipCoords;
+    }
+
+    public void setCoordsByIdx(int idx, Point coords) {
+        this.shipCoords[idx] = coords;
+    }
 }
