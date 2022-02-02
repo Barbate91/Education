@@ -12,11 +12,64 @@ public class GameHelper {
     private static int invalidAttempts = 0;
     final private static int maxInvalidAttempts = 3;
 
-    public static Integer getUserInput(int bound) {
+    public static Point getUserInput(Point gridMax) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a whole number:");
+        System.out.println("Enter an alphanumeric:");
         String response = scanner.nextLine();
-        return validateResponse(response, bound);
+        return parsedResponse(response,gridMax);
+    }
+
+    private static Point parsedResponse(String respToValidate, Point gridMax) {
+        boolean responseValidated = false;
+        String[] splitResp = respToValidate.split("\\d+");
+        if (splitResp.length != 2) {
+            System.out.println("Input not alphanumeric! Try again");
+            return null;
+        }
+
+        int guessX = validateFirst(splitResp[0], gridMax.getX());
+        int guessY = validateSecond(splitResp[1], gridMax.getY());
+        if (guessX == -1  || guessY == -1)
+            return -1;
+        return new Point(guessX,guessY);
+    }
+
+    private static Integer validateFirst(String firstInput, int bound) {
+        int charAsNum = getNumberForCharFromString(firstInput);
+        if (charAsNum > bound) {
+            System.out.println("First character of input out of bounds, please try again");
+            return -1;
+        }
+        return charAsNum;
+    }
+
+    private static Integer validateSecond(String secondInput, int bound) {
+        boolean isParsable = isInt(secondInput);
+        if (!isParsable) {
+            System.out.println("Second character of input not a whole number! Try again");
+            return -1;
+        }
+        int respToInt = Integer.parseInt(secondInput);
+        if(respToInt > bound) {
+            System.out.println("Second character of input out of bounds, please try again");
+            return -1;
+        }
+        return respToInt;
+    }
+
+    private static boolean isInt(String resp) {
+        try {
+            Integer.parseInt(resp);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Contract(pure = true)
+    private static Integer getNumberForCharFromString(String letter) {
+        char ch = letter.charAt(0);
+        return ((int)ch - 'A');
     }
 
     public static void handleInvalidAttempt() {
@@ -25,20 +78,6 @@ public class GameHelper {
             System.out.println("You have exceeded the maximum number of invalid guesses, you lose!");
             gameIsActive = false;
         }
-    }
-
-    private static Integer validateResponse(String respToValidate, int maxNum) {
-        boolean isParsable = isInt(respToValidate);
-        if (!isParsable) {
-            System.out.println("Not a whole number! Try again");
-            return -1;
-        }
-        int respToInt = Integer.parseInt(respToValidate);
-        if(respToInt > maxNum) {
-            System.out.println("Response out of bounds, please try again");
-            return -1;
-        }
-        return respToInt;
     }
 
     public static void generateGrid(int numCol, int numRow) {
@@ -50,7 +89,7 @@ public class GameHelper {
         }
     }
 
-    public static void fillCoords(Ship ship) {
+    public static void tryToPopulateCoordsInGrid(Ship ship) {
         int x = (int)ship.getCoords()[0].getX();
         int y = (int)ship.getCoords()[0].getY();
         boolean startPointTaken = grid[x][y];
@@ -136,19 +175,5 @@ public class GameHelper {
                 }
             }
         }
-    }
-
-    private static boolean isInt(String resp) {
-        try {
-            Integer.parseInt(resp);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Contract(pure = true)
-    private static String getCharForNumber(int num) {
-        return String.valueOf((char)(num+64));
     }
 }

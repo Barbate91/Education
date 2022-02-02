@@ -1,5 +1,7 @@
 /* Author: jake.armstrong
-TODO: Support for user arguments
+TODO: Refactor hit tracking
+      Refactor guessing to parse alphanumerics
+      Support for user arguments
       Rectangular grid size
       Print grid
       Ship HP Tracker
@@ -7,27 +9,26 @@ TODO: Support for user arguments
 
 package main.battleship;
 
+import java.awt.*;
+
 public class Game {
     private static int numOfGuesses = 0;
-    private static int totalGuesses = 4;
+    private static int totalGuesses = 15;
     private static int hits = 0;
-    private static int numShips = 3;
     private static int shipSize = 3;
-    private static int gridSize = 7;
+    private static Point gridMax = new Point(6,6);
     private static boolean isHit;
 
     public static void startGame() {
-        GameHelper.generateGrid(gridSize, gridSize);
+        initGridAndShips();
 
-        Ship battleship = new Ship(gridSize-1, gridSize-1, shipSize);
-
-
-        System.out.println("There is a " + shipSize + " unit wide ship in a " + (gridSize+1) + " unit wide grid");
+        System.out.println("There are 3 " + shipSize + " unit wide ships");
+        System.out.println(" in a " + (gridMax.getX()+1) + "x" + (gridMax.getY()+1) + " unit wide grid");
         System.out.println("You have " + totalGuesses + " guesses to target and sink the ship");
-        System.out.println("When prompted, enter a whole number between 0 and " + gridSize + " to guess where the ship is");
+        System.out.println("When prompted, enter an alphanumeric (ex: A1) to guess where the ship is");
 
         while(GameHelper.gameIsActive) {
-            int guess = GameHelper.getUserInput(gridSize);
+            Point guess = GameHelper.getUserInput(gridMax);
             if (guess != -1) {
                 isHit = battleship.checkForHit(guess);
                 updateHitsAndGuesses(isHit);
@@ -35,6 +36,15 @@ public class Game {
             } else {
                 GameHelper.handleInvalidAttempt();
             }
+        }
+    }
+
+    private static void initGridAndShips() {
+        GameHelper.generateGrid(gridSize, gridSize);
+        Ship[] ships = new Ship[3];
+
+        for (int i = 0; i < ships.length; i++) {
+            ships[i] = new Ship(gridSize-1, gridSize-1, shipSize);
         }
     }
 

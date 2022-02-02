@@ -8,7 +8,7 @@ public class Ship {
 
     public Ship(int boundX, int boundY, int shipSize) {
         this.shipCoords = new Point[shipSize];
-        setCoordsInGrid(boundX, boundY);
+        createAndSetCoordsInGrid(boundX, boundY);
     }
 
     public boolean checkForHit(Point target) {
@@ -27,11 +27,11 @@ public class Ship {
         return false;
     }
 
-    private void setCoordsInGrid(int boundX, int boundY) {
+    private void createAndSetCoordsInGrid(int boundX, int boundY) {
         int lastIdx = this.shipCoords.length-1;
         while (this.shipCoords[lastIdx] == null) {
             this.shipCoords[0] = createRandomStartingCoords(boundX, boundY);
-            GameHelper.fillCoords(this);
+            GameHelper.tryToPopulateCoordsInGrid(this);
         }
     }
 
