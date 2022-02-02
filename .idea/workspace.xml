@@ -5,23 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaaf4571-d7f0-4477-8b98-fe75b82987f6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/battleship/Game.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/battleship/GameHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/battleship/GamePlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/battleship/Ship.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/battleship/ShipTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Education.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Education.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Education/main/animalFactory/Animal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Education/main/animalFactory/Animal.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/battleship/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/battleship/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/battleship/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/battleship/.idea/runConfigurations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/battleship/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/battleship/battleship.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/battleship/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/battleship/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/battleship/GameHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/battleship/GameHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/battleship/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/battleship/Ship.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,8 +44,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
