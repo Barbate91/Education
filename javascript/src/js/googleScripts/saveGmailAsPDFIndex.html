@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+</head>
+<body>
+<div id="container">
+    <p>This web app takes all emails tagged with a specific label in Gmail and compiles them into a single PDF.</p>
+    <p>The program will then place these PDFs into a Google Drive folder of your choosing. I suggest going with a single folder located in your root directory made specifically for this purpose. The app will remove the label for the email in order to not duplicate emails, so this may screw up your normal email filtering if using your normal labels.</p>
+    <p>Error handling is currently a work in progress. Double check your Gmail folder to verify it is pulling emails.</p>
+    <p>The file name section is what the program will name the new PDF.</p>
+    <p>Good luck!</p>
+    <form id="userInput">
+        Gmail Label: <input type="text" id="gmailLabel"><br>
+        Google Drive Folder: <input type="text" id="driveFolder"><br>
+        Output File Name: <input type="text" id="fileName"><br>
+        <input type="button" value="Submit" onclick="formSubmit()"><br>
+    </form>
+</div>
+<script>
+      function formSubmit() {
+        var spinner = new Spinner().spin();
+        document.getElementById('container').appendChild(spinner.el);
+        var gmailLabel = document.forms["userInput"]["gmailLabel"].value;
+        var driveFolder = document.forms["userInput"]["driveFolder"].value;
+        var fileName = document.forms["userInput"]["fileName"].value;
+        google.script.run.withSuccessHandler(onSuccess)
+                         .withFailureHandler(onFailure)
+                         .saveGmailAsPDF(gmailLabel, driveFolder, fileName);
+        }
+
+      function onSuccess() {
+        document.getElementById('container').innerHTML += '<p>Success!</p>';
+      }
+
+      function onFailure() {
+        document.getElementById('container').innerHTML += '<p>Failure! Check logs.</p>';
+      }
+    </script>
+</body>
+</html>
